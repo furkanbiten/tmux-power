@@ -104,11 +104,12 @@ tmux_set status-left-bg "$G04"
 tmux_set status-left-fg "G12"
 tmux_set status-left-length 150
 user=$(whoami)
-LS="#[fg=$G04,bg=$TC,bold] $user_icon $user@#h #[fg=$TC,bg=$G06,nobold]$right_arrow_icon#[fg=$TC,bg=$G06] $session_icon #S "
+# LS="#[fg=$G04,bg=$TC,bold] $user_icon $user@#h #[fg=$TC,bg=$G06,nobold]$right_arrow_icon#[fg=$TC,bg=$G06] $session_icon #S "
+LS="#[fg=$G02,bg=$TC,bold] $session_icon #S #[fg=$TC,bg=$G02,nobold]$right_arrow_icon"
 if "$show_upload_speed"; then
     LS="$LS#[fg=$G06,bg=$G05]$right_arrow_icon#[fg=$TC,bg=$G05] $upload_speed_icon #{upload_speed} #[fg=$G05,bg=$BG]$right_arrow_icon"
 else
-    LS="$LS#[fg=$G06,bg=$BG]$right_arrow_icon"
+    LS="$LS#[fg=$G02,bg=$BG]$right_arrow_icon"
 fi
 if [[ $prefix_highlight_pos == 'L' || $prefix_highlight_pos == 'LR' ]]; then
     LS="$LS#{prefix_highlight}"
@@ -119,7 +120,7 @@ tmux_set status-left "$LS"
 tmux_set status-right-bg "$BG"
 tmux_set status-right-fg "G12"
 tmux_set status-right-length 150
-RS="#[fg=$G06]$left_arrow_icon#[fg=$TC,bg=$G06] $time_icon $time_format #[fg=$TC,bg=$G06]$left_arrow_icon#[fg=$G04,bg=$TC] $date_icon $date_format "
+RS="#[fg=$G02]$left_arrow_icon#[fg=$TC,bg=$G02] $time_icon $time_format #[fg=$TC,bg=$G02]$left_arrow_icon#[fg=$G02,bg=$TC] $date_icon $date_format #[fg=$G02,bg=$TC]$left_arrow_icon#[fg=$TC,bg=$G02] $user_icon $user@#h"
 if "$show_download_speed"; then
     RS="#[fg=$G05,bg=$BG]$left_arrow_icon#[fg=$TC,bg=$G05] $download_speed_icon #{download_speed} $RS"
 fi
@@ -133,16 +134,16 @@ tmux_set status-right "$RS"
 
 # Window status
 tmux_set window-status-format " #I:#W#F "
-tmux_set window-status-current-format "#[fg=$BG,bg=$G06]$right_arrow_icon#[fg=$TC,bold] #I:#W#F #[fg=$G06,bg=$BG,nobold]$right_arrow_icon"
+tmux_set window-status-current-format "#[fg=$BG,bg=$G02]$right_arrow_icon#[fg=$TC,bold] #I:#W#F #[fg=$G02,bg=$BG,nobold]$right_arrow_icon"
 
 # Window separator
 tmux_set window-status-separator ""
 
 # Window status alignment
-tmux_set status-justify centre
+tmux_set status-justify left
 
 # Current window status
-tmux_set window-status-current-statys "fg=$TC,bg=$BG"
+tmux_set window-status-current-status "fg=$TC,bg=$BG"
 
 # Pane border
 tmux_set pane-border-style "fg=$G07,bg=default"
@@ -166,3 +167,8 @@ tmux_set message-command-style "fg=$TC,bg=$BG"
 
 # Copy mode highlight
 tmux_set mode-style "bg=$TC,fg=$FG"
+
+# loadavg="#(uptime | rev | cut -d":" -f1 | rev | sed s/,//g)"
+# tmux_set status-right "#[fg=$TC,bg=$G05]Load: ${loadavg} $RS"
+
+tmux_set status-right "#[fg=$G02]$left_arrow_icon#[fg=$TC,bg=$G02] CPU:#(~/.tmux/plugins/tmux-cpu/scripts/cpu_percentage.sh) $left_arrow_icon#[fg=$G02,bg=$TC] RAM:#(~/.tmux/plugins/tmux-cpu/scripts/ram_percentage.sh) $RS"
